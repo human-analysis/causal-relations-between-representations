@@ -1,4 +1,4 @@
-#causalgenerator.py
+
 import torch
 import torch.nn as nn
 import random
@@ -30,32 +30,32 @@ def normal_noise(nsamples,ndims,nranges):
 
     return output
 
-class  LinearFun(nn.Module):
+class LinearFun(nn.Module):
     def __init__(self):
         super(LinearFun, self).__init__()
 
 
     def forward(self, cause):
-
+        cause = torch.tensor(cause)
         A=torch.rand(cause.shape[0],cause.shape[0])
         effect=A.mm(cause)+normal_noise(cause.shape[0],cause.shape[1],1)
 
         return scale_tensor(effect)
 
-class  QuadraticFun(nn.Module):
+class QuadraticFun(nn.Module):
     def __init__(self):
         super(QuadraticFun, self).__init__()
 
 
     def forward(self, cause):
-
+        cause = torch.tensor(cause)
         A=torch.rand(cause.shape[0],cause.shape[1])
         B=torch.rand(cause.shape[0],cause.shape[0])
         effect=A.mm(cause.T.mm(cause))+B.mm(cause)+normal_noise(cause.shape[0],cause.shape[1],1)
 
         return scale_tensor(effect)
 
-class  HadamardFun(nn.Module):
+class HadamardFun(nn.Module):
     def __init__(self):
         super(HadamardFun, self).__init__()
 
@@ -68,18 +68,19 @@ class  HadamardFun(nn.Module):
 
         return scale_tensor(effect)
 
-class  BilinearFun(nn.Module):
+class BilinearFun(nn.Module):
     def __init__(self):
         super(BilinearFun, self).__init__()
 
 
     def forward(self, cause):
+        cause=torch.tensor(cause)
         m = nn.Bilinear(8, 8, 8,bias=False)
         effect=m(cause,cause)+normal_noise(cause.shape[0],cause.shape[1],1)
 
         return scale_tensor(effect)
 
-class  GPFun(nn.Module):
+class GPFun(nn.Module):
     def __init__(self):
         super(GPFun, self).__init__()
 
@@ -101,7 +102,7 @@ class  GPFun(nn.Module):
 
         return scale_tensor(torch.tensor(effect))
 
-class  Cubicspline(nn.Module):
+class Cubicspline(nn.Module):
     def __init__(self):
         super(Cubicspline, self).__init__()
 
@@ -116,17 +117,22 @@ class  Cubicspline(nn.Module):
 
 class NN(nn.Module):
 
-    def __init__(self, indim=8,outdim=8,hdlayers=10):
+    def __init__(self, indim=8,outdim=8,hdlayers=10,nlayers=1):
         super().__init__()
 
-        self.model = nn.Sequential(
-            nn.Linear(indim+1, hdlayers),
-            nn.ReLU(),
-            nn.Dropout(),
-            nn.Linear(hdlayers,outdim),
-        )
+        layers=[]
+        layers.append(nn.Linear(indim+1, hdlayers))
+        layers.append(nn.ReLU())
+
+        for l in range(nlayers):
+            layers.append(nn.Linear(hdlayers, hdlayers))
+            layers.append(nn.ReLU())
+        layers.append(nn.Linear(hdlayers, outdim))
+
+        self.model = nn.Sequential(*layers)
 
     def forward(self, cause):
+        cause = torch.tensor(cause,dtype=torch.float32)
         self.noise = normal_noise(cause.shape[0],1,2)
         cause=torch.cat((cause,self.noise),1)
         effect=self.model(cause)
