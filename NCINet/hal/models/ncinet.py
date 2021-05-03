@@ -33,13 +33,9 @@ class MetricRenyi(nn.Module):
 
     def renyi_entropy(self, x):
         k = self.kernel(x)
-        if torch.trace(k)==0:
-            import pdb;pdb.set_trace()
         k = k / (torch.trace(k))
         eigv = torch.abs(torch.symeig(k, eigenvectors=True)[0])
         eig_pow = eigv ** self.alpha
-        # if torch.log2(torch.sum(eig_pow))==0:
-        #     import pdb;pdb.set_trace()
         entropy = (1 / (1 - self.alpha)) * torch.log2(torch.sum(eig_pow))
         return entropy
 
@@ -47,12 +43,8 @@ class MetricRenyi(nn.Module):
         x = self.kernel(x)
         y = self.kernel(y)
         k = torch.mul(x, y)
-        # if torch.trace(k)==0:
-        #     import pdb;pdb.set_trace()
         k = k / (torch.trace(k))
         eigv = torch.abs(torch.symeig(k, eigenvectors=True)[0])
-        # if torch.sum(eigv)==0:
-        #     import pdb;pdb.set_trace()
         eig_pow =  eigv ** self.alpha
         entropy = (1 / (1 - self.alpha)) * torch.log2(torch.sum(eig_pow))
         return entropy
@@ -64,8 +56,6 @@ class MetricRenyi(nn.Module):
         
         if self.normalize:
             Ixy = Hx + Hy - Hxy
-            # if torch.max(Hx, Hy)==0:
-            #     import pdb;pdb.set_trace()
             Ixy = Ixy / (torch.max(Hx, Hy))
         else:
             Ixy = Hx + Hy - Hxy
