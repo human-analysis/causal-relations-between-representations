@@ -1,0 +1,48 @@
+[Arguments]
+
+# project options
+project_name=NCINet
+save_dir=results/
+logs_dir=results/
+
+# dataset options
+dataset=CAUSAL
+dataroot=/data/dataset/syntheticdata/
+cache_size=1000
+npairs=100
+ndimsx=8
+ndimsy=8
+nranges=2
+idx=0
+
+# model options
+#precision=32
+w1=1
+w2=1
+w3=1
+batch_size_test = 1000
+batch_size_train = 10
+model_type = NCINet
+model_options = {"indim":16,"outdim":3,"reg":0.0007,"hdlayers":20}
+#loss_type = Classification
+loss_type_c = Classification
+loss_type_r = highdim_Regression
+loss_options = {}
+evaluation_type = Accuracy
+evaluation_options = {}
+
+#resolution_high = 32
+#resolution_wide = 32
+
+manual_seed = 0
+nepochs = 2000
+
+optim_method = AdamW
+learning_rate = 5e-4
+optim_options = {"weight_decay": 0}
+scheduler_method = MultiStepLR
+scheduler_options = {"milestones": [2000]}
+
+# cpu/gpu settings
+ngpu = 1
+nthreads = 4
