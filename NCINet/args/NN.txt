@@ -1,0 +1,47 @@
+[Arguments]
+
+log_name=ncinet
+
+dataset_train = Causalpairs_syn
+dataset_test = Causalpairs_syn
+
+nclasses_A = 4
+nclasses_T = 3
+
+total_classes = 4
+model_type_E = NN
+model_type_T = Target
+
+r = 6
+idx=0
+outdim=3
+reg = 0.0007
+reg_proj=0.0001
+npairs=100
+ndimsx=8
+ndimsy=8
+indim=16
+nunits=100
+
+batch_size_train = 100
+batch_size_test = 1000
+
+sigma = 1
+loss_type_E = Projection_gauss
+loss_type_T = Classification
+loss_type_R = Regression
+
+evaluation_type_T = Top1Classification
+
+manual_seed = 1
+
+nepochs = 500
+
+
+learning_rate_E = 1e-3
+optim_method_E = AdamW
+optim_options_E = {"weight_decay": 5e-5}
+
+
+ngpu = 1
+nthreads = 1
