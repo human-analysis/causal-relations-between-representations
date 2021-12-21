@@ -1,4 +1,4 @@
-# Neural Causal Inference Net (Generalization Experiment on SUnthetic Dataset)
+# Neural Causal Inference Net (Generalization Experiment on Synthetic Dataset)
 
 
 #### Training and testing the Model
