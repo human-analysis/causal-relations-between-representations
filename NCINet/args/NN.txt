@@ -17,6 +17,7 @@ idx=0
 outdim=3
 reg = 0.0007
 reg_proj=0.0001
+ntrain=1000
 npairs=100
 ndimsx=8
 ndimsy=8

@@ -38,6 +38,7 @@ def parse_args():
     parser.add_argument('--nunits', type=int, default=None, help='number of units in hidden layers')
     parser.add_argument('--ngpu', type=int, default=None, help='number of gpus to use')
     parser.add_argument('--idx', type=int, default=None, help='causal function idx')
+    parser.add_argument('--ntrain', type=int, default=None, help='number of training data')
     parser.add_argument('--npairs', type=int, default=None, help='number of data pairs in one sample')
     parser.add_argument('--ndimsx', type=int, default=None, help='x dimension')
     parser.add_argument('--ndimsy', type=int, default=None, help='y dimension')

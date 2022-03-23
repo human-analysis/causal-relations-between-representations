@@ -96,8 +96,7 @@ class Tester:
             self.labels_org.resize_(labels.size()).copy_(labels)
             self.sensitives_org.resize_(sensitives.size()).copy_(sensitives)
             labels = torch.zeros(batch_size, self.total_classes).scatter_(1, labels.unsqueeze(1).long(), 1)
-            sensitives = torch.zeros(batch_size, self.total_classes).scatter_(1, sensitives.unsqueeze(1).long() +
-                                                                     self.total_classes-self.nclasses_A, 1)
+            sensitives = torch.zeros(batch_size, self.total_classes).scatter_(1, sensitives.unsqueeze(1).long(), 1)
             self.X = X.to(self.device)
             self.Y = Y.to(self.device)
             self.labels = labels.to(torch.float).to(self.device)

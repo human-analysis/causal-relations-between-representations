@@ -8,24 +8,30 @@ class DataLoader:
         self.args = args
 
         self.idx = args.idx
+        self.ntrain=args.ntrain
         self.npairs=args.npairs
         self.ndimsx=args.ndimsx
         self.ndimsy=args.ndimsy
+        self.total_classes=args.total_classes
 
         self.dataset_test_name = args.dataset_test
         self.dataset_train_name = args.dataset_train
 
         self.dataset_train = getattr(datasets, self.dataset_train_name)(
+            ntrain=self.ntrain,
             npairs=self.npairs,
             ndimsx=self.ndimsx,
             ndimsy=self.ndimsy,
+            total_classes=self.total_classes,
             idx=self.idx,
             train=True
         )
         self.dataset_test = getattr(datasets, self.dataset_test_name)(
+            ntrain=self.ntrain,
             npairs=self.npairs,
             ndimsx=self.ndimsx,
             ndimsy=self.ndimsy,
+            total_classes=self.total_classes,
             idx=self.idx,
             train=False)
 

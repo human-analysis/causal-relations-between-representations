@@ -11,7 +11,6 @@ class Trainer:
     def __init__(self, args, model, criterion, evaluation):
 
         self.args = args
-        # self.r = args.r
         self.total_classes = args.total_classes
         self.nclasses_A = args.nclasses_a
         self.nclasses_T = args.nclasses_t
@@ -20,20 +19,9 @@ class Trainer:
         self.criterion = criterion
         self.evaluation = evaluation
 
-
-        # self.save_results = args.save_results
-
-        # self.env = args.env
-        # self.port = args.port
-        # self.dir_save = args.save_dir
-        # self.log_type = args.log_type
-
         self.device = args.device
         self.nepochs = args.nepochs
         self.batch_size = args.batch_size_train
-
-        # self.resolution_high = args.resolution_high
-        # self.resolution_wide = args.resolution_wide
 
         self.lr_e = args.learning_rate_e
         self.optim_method_e = args.optim_method_e
@@ -141,8 +129,7 @@ class Trainer:
 
             #### ARL-used label####
             labels = torch.zeros(batch_size, self.total_classes).scatter_(1, labels.unsqueeze(1).long(), 1)
-            sensitives = torch.zeros(batch_size, self.total_classes).scatter_(1, sensitives.unsqueeze(1).long() +
-                                                                     self.total_classes-self.nclasses_A, 1)
+            sensitives = torch.zeros(batch_size, self.total_classes).scatter_(1, sensitives.unsqueeze(1).long(), 1)
             self.labels = labels.to(torch.float).to(self.device)
             self.sensitives = sensitives.to(torch.float).to(self.device)
 

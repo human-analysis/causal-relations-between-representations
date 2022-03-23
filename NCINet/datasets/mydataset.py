@@ -6,7 +6,7 @@ from sklearn import mixture
 
 class Causalpairs_syn(Dataset):
 
-    def __init__(self, npairs,ndimsx,ndimsy, idx,train=True):
+    def __init__(self,ntrain,npairs,ndimsx,ndimsy,total_classes, idx,train=True):
 
         self.mechanism = {'linear': LinearFun,
                           'quadratic': QuadraticFun,
@@ -14,18 +14,22 @@ class Causalpairs_syn(Dataset):
                           'cubicspline':Cubicspline,
                           'nn':NN,
                         }
+        self.ntrain=ntrain
         self.train=train
         self.npairs=npairs
         self.ndimsx=ndimsx
         self.ndimsy=ndimsy
-        self.device="cuda:0"
+        self.device='cuda'
+        self.total_classes=total_classes
         self.idx=idx
 
         if not train:
             data_all = []
             label_all = []
-            for pair in range(0,600):
-                data = np.loadtxt('./data/val_data_'+str(self.idx) + '/%05d.csv' % (pair), delimiter=',')#m1_depvalue
+            dataset_config=np.loadtxt('./data/val_data_%d'%(self.idx) + '/config.csv', delimiter=',')
+            num_data=dataset_config.shape[0]
+            for pair in range(0,num_data):
+                data = np.loadtxt('./data/val_data_%d'%(self.idx) + '/%05d.csv' % (pair), delimiter=',')#m1_depvalue
                 X = data[:, 0:-1]
                 Y = data[:, -1]
                 Y[Y == -1] = 2
@@ -35,8 +39,8 @@ class Causalpairs_syn(Dataset):
             data_all = np.array(data_all)
             label_all = np.array(label_all)
 
-            self.X = torch.from_numpy(data_all[:,:,0:8]).float()
-            self.Y = torch.from_numpy(data_all[:,:,8:16]).float()
+            self.X = torch.from_numpy(data_all[:,:,0:ndimsx]).float()
+            self.Y = torch.from_numpy(data_all[:,:,ndimsx:ndimsx+ndimsy]).float()
             self.label = torch.from_numpy(label_all)
 
     def scale_tensor(self,data):
@@ -131,7 +135,7 @@ class Causalpairs_syn(Dataset):
     def __len__(self):
 
         if self.train:
-            l=1000
+            l=self.ntrain
         else:
             l=len(self.X)
         
@@ -141,8 +145,8 @@ class Causalpairs_syn(Dataset):
 
         if self.train:
             X,Y,label,sensitives_label=self.getdata(self.npairs,self.ndimsx,self.ndimsy)
-            if self.idx!=4:
-                if sensitives_label==4:
+            if self.idx!=self.total_classes:
+                if sensitives_label==self.total_classes:
                     sensitives_label=self.idx
             return X,Y,label,sensitives_label
         else:
