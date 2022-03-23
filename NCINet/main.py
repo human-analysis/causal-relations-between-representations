@@ -42,8 +42,8 @@ def main():
     loaders_train = dataloader.create("Train")
     loaders_test = dataloader.create("Test")
 
-    trainer_train = Trainer (args, model, criterion, evaluation)
-    tester_train = Tester (args, model, criterion, evaluation)
+    trainer = Trainer (args, model, criterion, evaluation)
+    tester = Tester (args, model, criterion, evaluation)
 
 
     for epoch in range(int(args.nepochs)):
@@ -51,10 +51,10 @@ def main():
 
         print('\nEpoch %d/%d\n' % (epoch + 1, args.nepochs))
 
-        loss_train = trainer_train.train(epoch, loaders_train, args.reg_proj,writer)
+        loss_train = trainer.train(epoch, loaders_train, args.reg_proj,writer)
 
         with torch.no_grad():
-            loss_test = tester_train.test(epoch, loaders_test, args.reg_proj,writer)
+            loss_test = tester.test(epoch, loaders_test, args.reg_proj,writer)
 
         # if epoch % 10 == 0:
         #     args.modelpath = './checkpoint/model_' + str(epoch) + '.pth'
