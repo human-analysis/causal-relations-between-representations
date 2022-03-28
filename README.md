@@ -1,1 +1,1 @@
-# causal-representation-learning
+# causal-relations-between-representations
