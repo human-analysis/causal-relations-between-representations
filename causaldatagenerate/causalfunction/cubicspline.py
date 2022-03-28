@@ -2,8 +2,10 @@
 
 import torch
 import torch.nn as nn
+import random
 import numpy as np
 from scipy import interpolate
+import matplotlib.pyplot as plt
 
 __all__ = ['Cubicspline']
 
@@ -29,10 +31,9 @@ class Cubicspline(nn.Module):
         supportX =sorted(np.random.randn(dKnot))
         Y=np.random.randn(dKnot)
         for dim in range(cause.shape[1]):
-            x=cause[:,dim]
-
+            x=cause[:,dim]        
             effect[:,dim]=interpolate.PchipInterpolator(supportX, Y)(x)
-
+         
         if cause2 is not None:
             cause2=cause2.numpy()
             effect2=np.zeros(cause2.shape)

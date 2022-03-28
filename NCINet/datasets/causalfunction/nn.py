@@ -1,6 +1,8 @@
 # nn.py
+
 import torch
 import torch.nn as nn
+import random
 import numpy as np
 
 __all__ = ['NN']
@@ -11,7 +13,7 @@ def scale_tensor(data):
 
     return (data-mean)/(std+1e-5)
 
-def normal_noise(nsamples,ndims):
+def normal_noise(nsamples,ndims,nranges):
 
     output=0.1*torch.rand(1)*torch.randn(nsamples,ndims)
 
@@ -19,16 +21,16 @@ def normal_noise(nsamples,ndims):
 
 class NN(nn.Module):
 
-    def __init__(self, indim1=8,outdim=8,indim2=0,hdlayers=10,nlayers=1):
+    def __init__(self, indim=8,outdim=8,indim2=0,hdlayers=10,nlayers=1):
         super().__init__()
         
-        self.indim1=indim1
+        self.indim=indim
         self.outdim=outdim
         self.hdlayers=np.random.randint(8, 20)
         self.nlayers=np.random.randint(0, 3)
 
         layers=[]
-        layers.append(nn.Linear(indim1+indim2+1, hdlayers))
+        layers.append(nn.Linear(indim+1+indim2, hdlayers))
         layers.append(nn.ReLU())
 
         for l in range(nlayers):
@@ -38,18 +40,19 @@ class NN(nn.Module):
 
         self.model = nn.Sequential(*layers)
 
-    def forward(self, cause1,cause2=None):
+    def forward(self, cause,cause2=None):
 
         if cause2 is not None:
-            self.noise = normal_noise(cause1.shape[0],1)
-            cause1=torch.cat((cause1,cause2),1)
-            cause1=torch.cat((cause1,self.noise),1)
+            self.noise = normal_noise(cause.shape[0],1,2)
+            cause=torch.cat((cause,cause2),1)
+            cause=torch.cat((cause,self.noise),1)
             with torch.no_grad():
-                effect=self.model(cause1)
+                effect=self.model(cause)
         else:
-            self.noise = normal_noise(cause1.shape[0],1)
-            cause1=torch.cat((cause1,self.noise),1)
+
+            self.noise = normal_noise(cause.shape[0],1,2)
+            cause=torch.cat((cause,self.noise),1)
             with torch.no_grad():
-                effect=self.model(cause1)
+                effect=self.model(cause)
 
         return scale_tensor(effect)

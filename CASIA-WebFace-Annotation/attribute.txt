@@ -1,0 +1,8 @@
+colorofhair={'brown':0,'red':1,'gray':2,'bald':3,','blonde':4,'black':5,not_visable':6,}
+eyes={'not_visible':0,'closed':1,'open':2}
+facial_hair={'no_facial_hair':0,'beard","mustache':1,'goatee':2,'beard':3,'mustache':4,'goatee","mustache':5}
+forehead={'partially_visible':0,'visible':1,'fully_blocked':2}
+mouth={'mouth_closed':0,'mouth_open_wide':1,'mouth_open':2}
+smiling={'no':0,'yes':1}
+wear_a+hat={'no':0,'yes':1}
+gender={'no':0,'yes':1} 

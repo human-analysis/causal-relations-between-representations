@@ -1,6 +1,8 @@
 # linear.py
 import torch
 import torch.nn as nn
+import random
+import matplotlib.pyplot as plt
 
 __all__ = ['LinearFun']
 
@@ -10,23 +12,26 @@ def scale_tensor(data):
 
     return (data-mean)/(std+1e-5)
 
-def normal_noise(nsamples,ndims):
+def normal_noise(nsamples,ndims,nranges):
 
     output=0.1*torch.rand(1)*torch.randn(nsamples,ndims)
-
     return output
 class LinearFun(nn.Module):
-    def __init__(self,indim1,outdim,indim2=0):
+    def __init__(self,indim,outdim,indim2=0):
         super(LinearFun, self).__init__()
-        self.indim1=indim1
+        self.indim=indim
         self.outdim=outdim
         self.indim2=indim2
 
-    def forward(self, cause1,cause2=None):
 
-        A=torch.randn(self.indim1,self.outdim)
-        effect=cause1.mm(A)+normal_noise(cause1.shape[0],self.outdim,1)
+    def forward(self, cause,cause2=None):
+  
         if cause2 is not None:
-            effect=effect+cause2.mm(A)
+            cause=torch.cat((cause,cause2),1)
+            A=torch.randn(self.indim+self.indim2,self.outdim)
+            effect=cause.mm(A)+normal_noise(cause.shape[0],self.outdim,1)
+        else:
+            A=torch.randn(self.indim,self.outdim)
+            effect=cause.mm(A)+normal_noise(cause.shape[0],self.outdim,1)
 
         return scale_tensor(effect)

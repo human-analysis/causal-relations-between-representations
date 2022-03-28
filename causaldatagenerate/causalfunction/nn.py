@@ -2,6 +2,7 @@
 
 import torch
 import torch.nn as nn
+import random
 import numpy as np
 
 __all__ = ['NN']
@@ -12,7 +13,7 @@ def scale_tensor(data):
 
     return (data-mean)/(std+1e-5)
 
-def normal_noise(nsamples,ndims):
+def normal_noise(nsamples,ndims,nranges):
 
     output=0.1*torch.rand(1)*torch.randn(nsamples,ndims)
 
