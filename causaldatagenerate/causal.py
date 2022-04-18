@@ -9,7 +9,6 @@ class PrepareCAUSAL():
     def __init__(self,npairs,ndimsx,ndimsy,idx):
 
         self.mechanism = {'linear': LinearFun,
-                          'quadratic': QuadraticFun,
                           'hadamard':HadamardFun,
                           'bilinear':BilinearFun,
                           'cubicspline':Cubicspline,
@@ -45,10 +44,10 @@ class PrepareCAUSAL():
 
     def getdata(self,npairs,ndimsx,ndimsy):
 
-        p_config = np.random.randint(0, 6)  # 6 different causal cases
+        p_config = np.random.randint(0, 5)  # 6 different causal cases
         p_fun=self.idx
         print(p_fun)      
-        funs=['linear','quadratic','hadamard','bilinear','cubicspline','nn']
+        funs=['linear','hadamard','bilinear','cubicspline','nn']
         fun=funs[p_fun]
         if p_config ==0: # X->Y
             X=self.initial_data(npairs,ndimsx)

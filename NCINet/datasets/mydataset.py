@@ -9,7 +9,7 @@ class Causalpairs_syn(Dataset):
     def __init__(self,ntrain,npairs,ndimsx,ndimsy,total_classes, idx,train=True):
 
         self.mechanism = {'linear': LinearFun,
-                          'quadratic': QuadraticFun,
+                          'hadamard': HadamardFun,
                           'bilinear':BilinearFun,
                           'cubicspline':Cubicspline,
                           'nn':NN,
@@ -73,7 +73,7 @@ class Causalpairs_syn(Dataset):
         while p_fun==self.idx:
             p_fun = np.random.randint(0, 5)
 
-        funs=['linear','quadratic','bilinear','cubicspline','nn']
+        funs=['linear','hadamard','bilinear','cubicspline','nn']
         fun=funs[p_fun]
 
         if p_config ==0: # X->Y
