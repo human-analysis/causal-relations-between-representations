@@ -16,7 +16,8 @@ NCINet is an approach for observational causal discovery from high-dimensional d
 and can be applied to real representations. It's also be applied to analyze the effect on the underlying causal relation between learned representations induced by various design choices in representation learning.
 ## Dataset
 <img width="500" alt="image" src="https://user-images.githubusercontent.com/16111637/177241541-6bfe567c-6212-4111-a92b-fe55ff74e8a8.png">
-CASIA-Webface facial attribute annotations: color of hair, eyes, eye wear, facial hair, forehead, mouth, smiling, gender.
+
+We annotate each face image in CASIA-Webface with eight multi-label attributes: color of hair, visibility of eyes, type of eyewear, facial hair, whether the mouth is open, smiling or not, wearing a hat, visibility of forehead, and gender.
 
 ## How to evalute NCInet (3Dshape)
 Causal consistency on 6 causal pair graphs.
@@ -29,7 +30,7 @@ Causal consistency on 6 causal pair graphs.
 
 <img width="700" alt="image" src="https://user-images.githubusercontent.com/16111637/177241459-a1ab8793-c067-4271-8499-52155d6c0d99.png">
 
-# Neural Causal Inference Net (Generalization Experiment on Synthetic Dataset)
+## Neural Causal Inference Net (Generalization Experiment on Synthetic Dataset)
 
 
 #### Training and testing the Model
